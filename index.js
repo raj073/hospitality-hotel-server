@@ -3,6 +3,7 @@ const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 const port = process.env.PORT || 5000;
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
@@ -27,6 +28,10 @@ async function run() {
     const hotelRoomCollection = client
       .db("hospitableHotel")
       .collection("hotelRoom");
+
+    const paymentsCollection = client
+      .db("hospitableHotel")
+      .collection("payments");
 
     //Room Categories Load from MongoDB
     app.get("/categories", async (req, res) => {
